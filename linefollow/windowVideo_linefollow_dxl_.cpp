@@ -45,92 +45,92 @@
 //
 //    while (true) {
 //        gettimeofday(&start, NULL);
-//        //capÀÇ ¿µ»óÀ» frame¿¡ »ğÀÔ
+//        //capì˜ ì˜ìƒì„ frameì— ì‚½ì…
 //        cap >> frame;
 //
 //        cvtColor(frame, gray, COLOR_BGR2GRAY);
-//        // Å©±â Á¶ÀıÇÑ ·Îµå ¸Ê
+//        // í¬ê¸° ì¡°ì ˆí•œ ë¡œë“œ ë§µ
 //
 //        noise = gray(Rect(0, 270, 640, 90));
 //        GaussianBlur(noise, noise, Size(5, 5), 0, 0);
 //
-//        // ¹à±â º¸Á¤
+//        // ë°ê¸° ë³´ì •
 //        double desiredMean = 70;
 //        Scalar meanValue = mean(noise);
 //        double b = desiredMean - meanValue.val[0];
 //        result = noise + b;
 //        result = max(0, min(255, result));
 //
-//        // ÀÌÁøÈ­
+//        // ì´ì§„í™”
 //        threshold(result, result, 128, 255, THRESH_BINARY);
 //
 //        int p_width = result.cols;
 //        int p_height = result.rows;
 //
-//        // ·¹ÀÌºí¸µ        
+//        // ë ˆì´ë¸”ë§        
 //        int numLabels = connectedComponentsWithStats(result, labels, stats, centroids);
 //        cvtColor(result, result, COLOR_GRAY2BGR);
 //
-//        // ÁÖ ·Îµå¸¦ ÀâÀ» ¿ŞÂÊ ±âÁØÁ¡
+//        // ì£¼ ë¡œë“œë¥¼ ì¡ì„ ì™¼ìª½ ê¸°ì¤€ì 
 //        static Point pos(1 * (p_width) / 4, p_height / 2);
 //        circle(result, pos, 3, Scalar(0, 255, 0), -1);
 //
-//        // ÁÖ ·Îµå¸¦ ÀâÀ» ¿À¸¥ÂÊ ±âÁØÁ¡
+//        // ì£¼ ë¡œë“œë¥¼ ì¡ì„ ì˜¤ë¥¸ìª½ ê¸°ì¤€ì 
 //        static Point posco(3 * (p_width) / 4, p_height / 2);
 //        circle(result, posco, 3, Scalar(0, 255, 0), -1);
 //
-//        // ¿¡·¯°ªÀ» °ËÃâÇÏ±â À§ÇØ »ç¿ëÇÒ °íÁ¤Á¡
+//        // ì—ëŸ¬ê°’ì„ ê²€ì¶œí•˜ê¸° ìœ„í•´ ì‚¬ìš©í•  ê³ ì •ì 
 //        static Point impot((p_width) / 2, p_height / 2);
 //        circle(result, impot, 3, Scalar(0, 255, 0), -1);
 //
-//        // °¢°¢ÀÇ ÁÂÇ¥Á¡°ú ¹Ú½º »ö±ò
+//        // ê°ê°ì˜ ì¢Œí‘œì ê³¼ ë°•ìŠ¤ ìƒ‰ê¹”
 //        for (int i = 1; i < numLabels; i++) {
 //            int left = stats.at<int>(i, CC_STAT_LEFT);
 //            int top = stats.at<int>(i, CC_STAT_TOP);
 //            int width = stats.at<int>(i, CC_STAT_WIDTH);
 //            int height = stats.at<int>(i, CC_STAT_HEIGHT);
 //
-//            // °´Ã¼ÀÇ Áß½ÉÁ¡
+//            // ê°ì²´ì˜ ì¤‘ì‹¬ì 
 //            double x = centroids.at<double>(i, 0);
 //            double y = centroids.at<double>(i, 1);
 //
-//            //°¢ ÁÖ·Îµå¸¦ Àâ±âÀ§ÇÑ Á¶°Ç
+//            //ê° ì£¼ë¡œë“œë¥¼ ì¡ê¸°ìœ„í•œ ì¡°ê±´
 //            Point integer = pos - Point(x, y);
 //            Point integer2 = posco - Point(x, y);
 //
-//            // ·¹ÀÌºí ±âÁØÀ¸·Î °´Ã¼ ±¸ºĞ (ÀÛÀº ÇÈ¼¿µéÀº ³ëÀÌÁî·Î Ãë±Ş)
+//            // ë ˆì´ë¸” ê¸°ì¤€ìœ¼ë¡œ ê°ì²´ êµ¬ë¶„ (ì‘ì€ í”½ì…€ë“¤ì€ ë…¸ì´ì¦ˆë¡œ ì·¨ê¸‰)
 //            int label = (stats.at<int>(i, CC_STAT_AREA));
 //            if (label < 80)continue;
 //
-//            //xÃà°ú yÃàÀÇ ¹üÀ§¸¦ Æ¯Á¤ÇÏ¿© Á¡ µû¶ó°¡±â
+//            //xì¶•ê³¼ yì¶•ì˜ ë²”ìœ„ë¥¼ íŠ¹ì •í•˜ì—¬ ì  ë”°ë¼ê°€ê¸°
 //            if ((integer.x <= 100 && integer.x >= -100) && ((integer.y >= -80) && (integer.y <= 80)))
 //            {
-//                // °´Ã¼ÀÇ Áß½ÉÁ¡À¸·Î ÁÂÇ¥°ª ÃÊ±âÈ­~
+//                // ê°ì²´ì˜ ì¤‘ì‹¬ì ìœ¼ë¡œ ì¢Œí‘œê°’ ì´ˆê¸°í™”~
 //                pos = Point(x, y);
-//                // »ç°¢Çü            
+//                // ì‚¬ê°í˜•            
 //                rectangle(result, Point(left, top), Point(left + width, top + height), Scalar(0, 255, 0), 2);
 //
-//                // ¿ø (Áß½É ÁÂÇ¥¿¡ Á¡ Âï±â)
+//                // ì› (ì¤‘ì‹¬ ì¢Œí‘œì— ì  ì°ê¸°)
 //                circle(result, Point(static_cast<int>(x), static_cast<int>(y)), 3, Scalar(0, 0, 255), -1);
 //            }
 //            else if ((integer2.x <= 80 && integer2.x >= -80) && ((integer2.y <= 80) && (integer2.y >= -85)))
 //            {
 //                posco = Point(x, y);
-//                // »ç°¢Çü            
+//                // ì‚¬ê°í˜•            
 //                rectangle(result, Point(left, top), Point(left + width, top + height), Scalar(0, 255, 0), 2);
 //
-//                // ¿ø (Áß½É ÁÂÇ¥¿¡ Á¡ Âï±â)
+//                // ì› (ì¤‘ì‹¬ ì¢Œí‘œì— ì  ì°ê¸°)
 //                circle(result, Point(static_cast<int>(x), static_cast<int>(y)), 3, Scalar(0, 0, 255), -1);
 //            }
-//            // integer.y Â÷ÀÌ°¡ 150ÀÌ»óÀÌµÇ¸é °´Ã¼ÀÇ
+//            // integer.y ì°¨ì´ê°€ 150ì´ìƒì´ë˜ë©´ ê°ì²´ì˜
 //            else if (integer.y >= 150)pos = Point(x, y);
 //            else if (integer2.y >= 150)posco = Point(x, y);
 //
 //            else
 //            {
-//                // »ç°¢Çü            
+//                // ì‚¬ê°í˜•            
 //                rectangle(result, Point(left, top), Point(left + width, top + height), Scalar(0, 0, 255), 2);
-//                // ¿ø (Áß½É ÁÂÇ¥¿¡ Á¡ Âï±â)
+//                // ì› (ì¤‘ì‹¬ ì¢Œí‘œì— ì  ì°ê¸°)
 //                circle(result, Point(static_cast<int>(x), static_cast<int>(y)), 3, Scalar(255, 0, 0), -1);
 //            }
 //
@@ -139,7 +139,7 @@
 //        line(result, pos, posco, Scalar(0, 0, 255), 1);
 //        vel1 = 100 - (0.3) * error;
 //        vel2 = -(100 + (0.3) * error);
-//        // Å°º¸µå °¨Áö!
+//        // í‚¤ë³´ë“œ ê°ì§€!
 //        if (mx.kbhit())
 //        {
 //            char ch = mx.getch();
@@ -147,23 +147,23 @@
 //            else if (ch == 's') mode = true;
 //        }
 //
-//        if (ctrl_c_pressed) break; //Ctrl+cÀÔ·Â½Ã Å»Ãâ
-//        if (mode) mx.setVelocity(vel1, vel2);   //´ÙÀÌ³ª¹Í¼¿ µ¿ÀÛ
+//        if (ctrl_c_pressed) break; //Ctrl+cì…ë ¥ì‹œ íƒˆì¶œ
+//        if (mode) mx.setVelocity(vel1, vel2);   //ë‹¤ì´ë‚˜ë¯¹ì…€ ë™ì‘
 //        usleep(10 * 1000);
-//        // Á¾·á ½Ã°£ ±â·Ï
+//        // ì¢…ë£Œ ì‹œê°„ ê¸°ë¡
 //        gettimeofday(&end1, NULL);
 //        time1 = end1.tv_sec - start.tv_sec + (end1.tv_usec - start.tv_usec) / 1000000.0;
 //
-//        // ±âº» ¿µ»ó°ú ·Îµå ¿µ»ó   
+//        // ê¸°ë³¸ ì˜ìƒê³¼ ë¡œë“œ ì˜ìƒ   
 //        writer << result;
 //        writer2 << frame;
 //        waitKey(1);
 //
-//        // °á°ú Ãâ·Â
+//        // ê²°ê³¼ ì¶œë ¥
 //        cout << "err : " << error << ", lvel:" << vel1 << ',' << "rvel:" << vel2 <<
 //            ", time:" << time1 << endl;
 //    }
-//    // ¿µ»óÀÇ Àç»ıÀÌ ³¡³ª¸é Á¾·á
+//    // ì˜ìƒì˜ ì¬ìƒì´ ëë‚˜ë©´ ì¢…ë£Œ
 //    mx.close();
 //    cap.release();
 //    return 0;
