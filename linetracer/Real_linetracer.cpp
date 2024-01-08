@@ -34,7 +34,7 @@
 //    VideoWriter writer2(dst2, 0, (double)30, Size(640, 360), true);
 //    if (!writer2.isOpened()) { cerr << "Writer open failed!" << endl; return -1; }
 //
-//    //Ä«¸Ş¶ó ¿À·ù
+//    //ì¹´ë©”ë¼ ì˜¤ë¥˜
 //    if (!cap.isOpened()) {
 //        cout << "Camera error" << endl; return -1;
 //    }
@@ -42,7 +42,7 @@
 //    Mat frame, gray, noise, result;
 //    Mat labels, stats, centroids;
 //
-//    //´ÙÀÌ³ª¹Í»ø Á¶Á¤
+//    //ë‹¤ì´ë‚˜ë¯¹ìƒ ì¡°ì •
 //    Dxl mx;
 //    struct timeval start, end1;
 //    double time1;
@@ -51,78 +51,78 @@
 //    if (!mx.open()) { cout << "dynamixel open error" << endl; return -1; }
 //    while (true) {
 //        gettimeofday(&start, NULL);
-//        //capÀÇ ¿µ»óÀ» frame¿¡ »ğÀÔ
+//        //capì˜ ì˜ìƒì„ frameì— ì‚½ì…
 //        cap >> frame;
 //
-//        // 1Ã¤³Î·Î ¹Ù²Ù±â
+//        // 1ì±„ë„ë¡œ ë°”ê¾¸ê¸°
 //        cvtColor(frame, gray, COLOR_BGR2GRAY);
 //
-//        // Å©±â Á¶ÀıÇÑ ·Îµå ¸Ê        
+//        // í¬ê¸° ì¡°ì ˆí•œ ë¡œë“œ ë§µ        
 //        noise = gray(Rect(0, 270, 640, 90));
 //        GaussianBlur(noise, noise, Size(5, 5), 0, 0);
 //
-//        // ¹à±â º¸Á¤
+//        // ë°ê¸° ë³´ì •
 //        double desiredMean = 70;
 //        Scalar meanValue = mean(noise);
 //        double b = desiredMean - meanValue.val[0];
 //        result = noise + b;
 //        result = max(0, min(255, result));
-//        // ÀÌÁøÈ­
+//        // ì´ì§„í™”
 //        threshold(result, result, 128, 255, THRESH_BINARY);
 //
 //        int p_width = result.cols;
 //        int p_height = result.rows;
 //
-//        // ·¹ÀÌºí¸µ        
+//        // ë ˆì´ë¸”ë§        
 //        int numLabels = connectedComponentsWithStats(result, labels, stats, centroids);
 //        cvtColor(result, result, COLOR_GRAY2BGR);
 //
-//        // ÁÖ ·Îµå¸¦ ÀâÀ» ±âÁØÁ¡
+//        // ì£¼ ë¡œë“œë¥¼ ì¡ì„ ê¸°ì¤€ì 
 //        static Point pos((p_width) / 2, p_height / 2);
-//        circle(result, pos, 3, Scalar(0, 255, 0), -1);      // °´Ã¼ÀÇ Áß½ÉÁ¡À» Àß µû¶ó°¡°í ÀÖ³ª È®ÀÎÇÏ´Â Á¡
+//        circle(result, pos, 3, Scalar(0, 255, 0), -1);      // ê°ì²´ì˜ ì¤‘ì‹¬ì ì„ ì˜ ë”°ë¼ê°€ê³  ìˆë‚˜ í™•ì¸í•˜ëŠ” ì 
 //
 //        static Point poss((p_width) / 2, p_height / 2);
 //
-//        // °¢°¢ÀÇ ÁÂÇ¥Á¡°ú ¹Ú½º »ö±ò
+//        // ê°ê°ì˜ ì¢Œí‘œì ê³¼ ë°•ìŠ¤ ìƒ‰ê¹”
 //        for (int i = 1; i < numLabels; i++) {
 //            int left = stats.at<int>(i, CC_STAT_LEFT);
 //            int top = stats.at<int>(i, CC_STAT_TOP);
 //            int width = stats.at<int>(i, CC_STAT_WIDTH);
 //            int height = stats.at<int>(i, CC_STAT_HEIGHT);
 //
-//            // °´Ã¼ÀÇ Áß½ÉÁ¡
+//            // ê°ì²´ì˜ ì¤‘ì‹¬ì 
 //            double x = centroids.at<double>(i, 0);
 //            double y = centroids.at<double>(i, 1);
 //
-//            // ¡ÚÁöÁ¤ÇÑ Áß½ÉÁ¡À¸·ÎºÎÅÍ ÇöÀç ÁÖ ¶óÀÎÀÇ Áß½ÉÁ¡ °Å¸®Â÷ÀÌ
+//            // â˜…ì§€ì •í•œ ì¤‘ì‹¬ì ìœ¼ë¡œë¶€í„° í˜„ì¬ ì£¼ ë¼ì¸ì˜ ì¤‘ì‹¬ì  ê±°ë¦¬ì°¨ì´
 //            Point integer = pos - Point(x, y);
 //            Point point(Point(x, y));
 //
 //
-//            // ·¹ÀÌºí ±âÁØÀ¸·Î °´Ã¼ ±¸ºĞ (ÀÛÀº ÇÈ¼¿µéÀº ³ëÀÌÁî·Î Ãë±Ş)
+//            // ë ˆì´ë¸” ê¸°ì¤€ìœ¼ë¡œ ê°ì²´ êµ¬ë¶„ (ì‘ì€ í”½ì…€ë“¤ì€ ë…¸ì´ì¦ˆë¡œ ì·¨ê¸‰)
 //            int label = (stats.at<int>(i, CC_STAT_AREA));
 //            if (label < 60)continue;
 //
 //
-//            // xÃà°ú yÃàÀÇ °Å¸®°£ÀÇ Â÷ÀÌ¸¦ ÀÌ¿ëÇÏ¿© ÁÖ ¶óÀÎ °ËÃâ        
+//            // xì¶•ê³¼ yì¶•ì˜ ê±°ë¦¬ê°„ì˜ ì°¨ì´ë¥¼ ì´ìš©í•˜ì—¬ ì£¼ ë¼ì¸ ê²€ì¶œ        
 //            if ((integer.x <= 80 && integer.x >= -80) && ((integer.y >= -50) && (integer.y <= 50)))
 //            {
 //                pos = Point(x, y);
-//                // »ç°¢Çü            
+//                // ì‚¬ê°í˜•            
 //
 //                error = poss.x - point.x;
 //                rectangle(result, Point(left, top), Point(left + width, top + height), Scalar(0, 255, 0), 2);
 //
-//                // ¿ø (Áß½É ÁÂÇ¥¿¡ Á¡ Âï±â)
+//                // ì› (ì¤‘ì‹¬ ì¢Œí‘œì— ì  ì°ê¸°)
 //                circle(result, Point(static_cast<int>(x), static_cast<int>(y)), 3, Scalar(0, 0, 255), -1);
 //            }
 //            else if (integer.y >= 150)pos = Point(x, y);
 //            else
 //            {
-//                // »ç°¢Çü            
+//                // ì‚¬ê°í˜•            
 //                rectangle(result, Point(left, top), Point(left + width, top + height), Scalar(0, 0, 255), 2);
 //
-//                // ¿ø (Áß½É ÁÂÇ¥¿¡ Á¡ Âï±â)
+//                // ì› (ì¤‘ì‹¬ ì¢Œí‘œì— ì  ì°ê¸°)
 //                circle(result, Point(static_cast<int>(x), static_cast<int>(y)), 3, Scalar(255, 0, 0), -1);
 //            }
 //            vel1 = 100 - (0.3) * error;
@@ -135,7 +135,7 @@
 //            else if (ch == 's') mode = true;
 //        }
 //
-//        if (ctrl_c_pressed) break; //Ctrl+cÀÔ·Â½Ã Å»Ãâ
+//        if (ctrl_c_pressed) break; //Ctrl+cì…ë ¥ì‹œ íƒˆì¶œ
 //        if (mode) mx.setVelocity(vel1, vel2);
 //        usleep(1 * 1000);
 //        gettimeofday(&end1, NULL);
@@ -144,12 +144,12 @@
 //        cout << "err : " << error << ", lvel:" << vel1 << ',' << "rvel:" << vel2 <<
 //            ", time:" << time1 << ", error : " << error << endl;
 //
-//        // ±âº» ¿µ»ó°ú ·Îµå ¿µ»ó   
+//        // ê¸°ë³¸ ì˜ìƒê³¼ ë¡œë“œ ì˜ìƒ   
 //        writer << result;
 //        writer2 << frame;
 //        waitKey(1);
 //    }
-//    // ¿µ»óÀÇ Àç»ıÀÌ ³¡³ª¸é Á¾·á
+//    // ì˜ìƒì˜ ì¬ìƒì´ ëë‚˜ë©´ ì¢…ë£Œ
 //    mx.close();
 //    cap.release();
 //    return 0;
